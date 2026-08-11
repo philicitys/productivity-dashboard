@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Warm, earthy palette inspired by Casey Danielle's life dashboard:
+   muted browns, sage greens, soft pink, sandy neutrals. */
+:root {
+  --surface: 246 239 223; /* #f6efdf sand */
+  --card: 252 248 240; /* warm cream */
+  --ink: 60 47 40; /* deep espresso */
+  --muted: 134 106 91; /* #866a5b taupe */
+  --line: 207 187 159; /* #cfbb9f sandy border */
+  --brand: 120 91 78; /* #785b4e warm brown */
+  --accent: 214 141 132; /* #d68d84 soft pink */
+  --sage: 122 129 108; /* #7a816c sage */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface: 38 32 28; /* dark espresso */
+    --card: 51 43 38;
+    --ink: 240 231 217;
+    --muted: 183 160 143;
+    --line: 82 68 59;
+    --brand: 199 160 143;
+    --accent: 214 141 132;
+    --sage: 150 158 133;
+  }
+}
+
+html,
+body {
+  background:
+    radial-gradient(1200px 600px at 100% -10%, rgb(var(--accent) / 0.10), transparent),
+    radial-gradient(1000px 500px at -10% 110%, rgb(var(--sage) / 0.12), transparent),
+    rgb(var(--surface));
+  background-attachment: fixed;
+  color: rgb(var(--ink));
+}
