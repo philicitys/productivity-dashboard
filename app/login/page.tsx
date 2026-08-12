@@ -39,7 +39,7 @@ export default function LoginPage() {
         onSubmit={submit}
         className="w-full max-w-sm rounded-2xl border border-line bg-card p-8 shadow-sm"
       >
-        <h1 className="text-xl font-semibold text-ink">Your dashboard</h1>
+        <h1 className="text-xl font-semibold text-ink">Welcome, that girl</h1>
         <p className="mt-1 text-sm text-muted">Enter your password to continue.</p>
 
         <input
