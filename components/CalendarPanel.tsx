@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { useAppState } from "./StateProvider";
-import { SectionBox } from "./ui";
-import { ymd } from "@/lib/id";
+import { Button, Input, SectionBox, Select } from "./ui";
+import { uid, ymd } from "@/lib/id";
 
 type Ev = { title: string; color: string };
 
 const TYPE_COLOR = {
+  event: "#8f86a6",
   task: "rgb(var(--brand))",
   assignment: "rgb(var(--sage))",
   clinical: "rgb(var(--accent))",
@@ -15,6 +16,8 @@ const TYPE_COLOR = {
 };
 
 const DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+type Kind = "event" | "task" | "assignment" | "clinical" | "study";
 
 function Legend({ color, label }: { color: string; label: string }) {
   return (
@@ -25,13 +28,26 @@ function Legend({ color, label }: { color: string; label: string }) {
   );
 }
 
+function pretty(date: string) {
+  return new Date(date + "T00:00:00").toLocaleDateString(undefined, {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+}
+
 export default function Calendar() {
-  const { state } = useAppState();
+  const { state, update } = useAppState();
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const [cursor, setCursor] = useState(
     new Date(today.getFullYear(), today.getMonth(), 1)
   );
+
+  // Add-event form state.
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
+  const [title, setTitle] = useState("");
+  const [kind, setKind] = useState<Kind>("event");
 
   // Aggregate everything with a date into a map: yyyy-mm-dd -> events
   const events: Record<string, Ev[]> = {};
@@ -39,6 +55,7 @@ export default function Calendar() {
     if (!date) return;
     (events[date] ||= []).push(ev);
   };
+  state.events.forEach((e) => add(e.date, { title: e.title, color: TYPE_COLOR.event }));
   state.tasks
     .filter((t) => !t.done)
     .forEach((t) => add(t.due, { title: t.title, color: TYPE_COLOR.task }));
@@ -51,6 +68,58 @@ export default function Calendar() {
   state.school.studyBlocks.forEach((b) =>
     add(b.date, { title: b.title, color: TYPE_COLOR.study })
   );
+
+  function addToDay() {
+    if (!selectedDay || !title.trim()) return;
+    const t = title.trim();
+    const now = new Date().toISOString();
+    update((d) => {
+      if (kind === "event") {
+        d.events.push({ id: uid("evt"), title: t, date: selectedDay, createdAt: now });
+      } else if (kind === "task") {
+        d.tasks.unshift({
+          id: uid("task"),
+          title: t,
+          priority: "medium",
+          due: selectedDay,
+          done: false,
+          createdAt: now,
+        });
+      } else if (kind === "assignment") {
+        d.school.assignments.unshift({
+          id: uid("asgn"),
+          title: t,
+          course: "General",
+          type: "other",
+          due: selectedDay,
+          done: false,
+          createdAt: now,
+        });
+      } else if (kind === "clinical") {
+        d.school.clinicals.push({
+          id: uid("clin"),
+          site: t,
+          date: selectedDay,
+          start: "07:00",
+          end: "15:00",
+          prepDone: false,
+          paperworkDone: false,
+          createdAt: now,
+        });
+      } else if (kind === "study") {
+        d.school.studyBlocks.push({
+          id: uid("block"),
+          title: t,
+          date: selectedDay,
+          start: "09:00",
+          end: "10:00",
+          createdAt: now,
+        });
+      }
+      return d;
+    });
+    setTitle("");
+  }
 
   const year = cursor.getFullYear();
   const month = cursor.getMonth();
@@ -66,7 +135,6 @@ export default function Calendar() {
     cells.push(new Date(cur));
     cur.setDate(cur.getDate() + 1);
   }
-  // Keep only weeks that touch this month (trims a fully-trailing week).
   const rows: Date[][] = [];
   for (let w = 0; w < 6; w++) {
     const row = cells.slice(w * 7, w * 7 + 7);
@@ -119,15 +187,22 @@ export default function Calendar() {
           const inMonth = day.getMonth() === month;
           const key = ymd(day);
           const isToday = key === ymd(today);
+          const isSelected = key === selectedDay;
           const evs = events[key] || [];
           return (
-            <div
+            <button
               key={idx}
-              className={`min-h-[70px] rounded-md border p-1 ${
+              onClick={() => {
+                setSelectedDay(key);
+                setTitle("");
+              }}
+              className={`min-h-[70px] rounded-md border p-1 text-left transition hover:border-brand ${
                 inMonth
                   ? "border-[rgb(var(--edge))] bg-card"
                   : "border-transparent bg-transparent"
-              } ${isToday ? "ring-2 ring-brand" : ""}`}
+              } ${isToday ? "ring-2 ring-brand" : ""} ${
+                isSelected ? "ring-2 ring-accent" : ""
+              }`}
             >
               <div
                 className={`text-[11px] ${
@@ -157,12 +232,51 @@ export default function Calendar() {
                   <div className="text-[10px] text-muted">+{evs.length - 3} more</div>
                 )}
               </div>
-            </div>
+            </button>
           );
         })}
       </div>
 
+      {selectedDay && (
+        <div className="mt-3 rounded-xl border border-[rgb(var(--edge))] bg-surface/50 p-3">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase tracking-wide text-muted">
+              Add to {pretty(selectedDay)}
+            </span>
+            <button
+              onClick={() => setSelectedDay(null)}
+              className="text-muted hover:text-ink"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Input
+              value={title}
+              autoFocus
+              placeholder="What's happening?"
+              onChange={(e) => setTitle(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && addToDay()}
+              className="min-w-[180px] flex-1"
+            />
+            <Select value={kind} onChange={(e) => setKind(e.target.value as Kind)}>
+              <option value="event">Event</option>
+              <option value="task">Task</option>
+              <option value="assignment">Assignment</option>
+              <option value="clinical">Clinical</option>
+              <option value="study">Study block</option>
+            </Select>
+            <Button onClick={addToDay}>Add</Button>
+          </div>
+          <p className="mt-2 text-[11px] text-muted">
+            Tip: pick a type so it also shows up in the matching tab.
+          </p>
+        </div>
+      )}
+
       <div className="mt-3 flex flex-wrap gap-3 px-1 text-[10px] text-muted">
+        <Legend color={TYPE_COLOR.event} label="Event" />
         <Legend color={TYPE_COLOR.task} label="Task" />
         <Legend color={TYPE_COLOR.assignment} label="Assignment" />
         <Legend color={TYPE_COLOR.clinical} label="Clinical" />
