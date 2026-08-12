@@ -15,6 +15,7 @@ import {
 import { useAppState } from "./StateProvider";
 import { Empty, Pill, SectionBox, relativeDue } from "./ui";
 import { startOfWeek, weekKey } from "@/lib/id";
+import Calendar from "./CalendarPanel";
 
 function WeeklyFocus() {
   const { state, update } = useAppState();
@@ -62,7 +63,7 @@ function WeeklyFocus() {
 
 function Stat({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="rounded-2xl border border-line bg-card p-4 text-center shadow-[0_1px_2px_rgb(0_0_0/0.03)]">
+    <div className="rounded-2xl border border-[rgb(var(--edge))] bg-card p-4 text-center shadow-[0_1px_2px_rgb(0_0_0/0.03)]">
       <div className="font-display text-3xl font-semibold text-ink">{value}</div>
       <div className="mt-1 text-[11px] uppercase tracking-wide text-muted">{label}</div>
     </div>
@@ -144,6 +145,8 @@ export default function StatsPanel({
         <Stat label="Habits tracked" value={state.habits.length} />
         <Stat label="Upcoming clinicals" value={upcomingClinicals} />
       </div>
+
+      <Calendar />
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <SectionBox icon="✎" title="In progress goals">

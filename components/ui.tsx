@@ -11,7 +11,7 @@ export function Card({
 }) {
   return (
     <div
-      className={`rounded-2xl border border-line bg-card p-5 shadow-[0_1px_2px_rgb(0_0_0/0.03)] ${className}`}
+      className={`rounded-2xl border border-[rgb(var(--edge))] bg-card p-5 shadow-[0_1px_2px_rgb(0_0_0/0.03)] ${className}`}
     >
       {children}
     </div>
@@ -36,9 +36,9 @@ export function SectionBox({
 }) {
   return (
     <div
-      className={`overflow-hidden rounded-2xl border border-line bg-card shadow-[0_1px_2px_rgb(0_0_0/0.03)] ${className}`}
+      className={`overflow-hidden rounded-2xl border border-[rgb(var(--edge))] bg-card shadow-[0_1px_2px_rgb(0_0_0/0.03)] ${className}`}
     >
-      <div className="flex items-center justify-between border-b border-line bg-surface/70 px-4 py-2.5">
+      <div className="flex items-center justify-between border-b border-[rgb(var(--edge))] bg-surface/70 px-4 py-2.5">
         <div className="flex items-center gap-2">
           {icon && <span className="text-sm leading-none">{icon}</span>}
           <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
