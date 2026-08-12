@@ -109,7 +109,7 @@ export default function StatsPanel({
       typeCounts[a.type] = (typeCounts[a.type] || 0) + 1;
     });
   const pieData = Object.entries(typeCounts).map(([name, value]) => ({ name, value }));
-  const PIE_COLORS = ["#6366f1", "#10b981", "#f59e0b", "#ef4444", "#06b6d4", "#ec4899"];
+  const PIE_COLORS = ["#3f3a34", "#96a085", "#caa6a5", "#b9b0a2", "#8c857a", "#d8cfc2"];
 
   // Combined upcoming deadlines across tasks + assignments + clinicals
   type Up = { title: string; sub: string; due: string };
