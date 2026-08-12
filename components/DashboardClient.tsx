@@ -53,7 +53,7 @@ function Shell() {
     <div className="mx-auto max-w-5xl px-4 py-6">
       <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-ink">Dashboard</h1>
+          <h1 className="text-2xl font-bold text-ink">Welcome, that girl</h1>
           <p className="text-sm text-muted">
             {new Date().toLocaleDateString(undefined, {
               weekday: "long",
