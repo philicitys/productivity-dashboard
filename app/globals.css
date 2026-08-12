@@ -5,43 +5,50 @@
 @tailwind utilities;
 
 /* Cool minimalist "that girl" theme:
-   warm paper neutrals, soft charcoal text, an editorial serif for
+   warm blush-paper neutrals, soft charcoal text, editorial serif
    headings, and the faintest dusty-rose + sage accents. */
 :root {
-  --surface: 244 240 233;  /* warm paper */
+  --surface: 247 241 238;  /* warm blush paper */
   --card: 253 252 250;     /* near white */
   --ink: 38 35 31;         /* soft charcoal */
-  --muted: 143 135 124;    /* warm gray */
-  --line: 228 223 214;     /* light warm border */
+  --muted: 146 138 128;    /* warm gray */
+  --line: 234 228 220;     /* light warm border */
   --brand: 63 58 52;       /* espresso charcoal */
-  --accent: 202 166 165;   /* dusty rose */
+  --accent: 205 168 167;   /* dusty rose */
   --sage: 150 158 133;     /* muted sage */
 }
 
 /* Keep the light, airy look on every device. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --surface: 244 240 233;
+    --surface: 247 241 238;
     --card: 253 252 250;
     --ink: 38 35 31;
-    --muted: 143 135 124;
-    --line: 228 223 214;
+    --muted: 146 138 128;
+    --line: 234 228 220;
     --brand: 63 58 52;
-    --accent: 202 166 165;
+    --accent: 205 168 167;
     --sage: 150 158 133;
   }
 }
 
 html,
 body {
-  background: rgb(var(--surface));
+  background-color: rgb(var(--surface));
+  background-image: radial-gradient(
+    1100px 520px at 50% -25%,
+    rgb(var(--accent) / 0.14),
+    transparent
+  );
+  background-attachment: fixed;
   color: rgb(var(--ink));
 }
 
-/* Editorial serif for headings, clean sans for everything else. */
+/* Editorial serif for headings + anything tagged .font-display. */
 h1,
 h2,
-h3 {
+h3,
+.font-display {
   font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
   letter-spacing: -0.01em;
 }
