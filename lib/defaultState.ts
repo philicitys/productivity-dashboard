@@ -103,6 +103,7 @@ export function defaultState(): AppState {
         },
       ],
     },
+    events: [],
     weekly: {},
     updatedAt: now,
   };

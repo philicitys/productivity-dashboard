@@ -87,6 +87,14 @@ export interface School {
   clinicals: Clinical[];
 }
 
+// A generic calendar event (appointment, birthday, reminder…).
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  date: string; // yyyy-mm-dd
+  createdAt: string;
+}
+
 // Per-week notes keyed by ISO week (e.g. "2026-W33"): a focus and a reflection.
 export interface WeekNotes {
   focus?: string;
@@ -99,6 +107,7 @@ export interface AppState {
   habits: Habit[];
   goals: Goal[];
   school: School;
+  events: CalendarEvent[];
   weekly: Record<string, WeekNotes>;
   updatedAt?: string;
 }

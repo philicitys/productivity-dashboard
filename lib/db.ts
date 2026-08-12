@@ -26,6 +26,7 @@ function normalize(state: any): AppState {
       studyBlocks: Array.isArray(s.school?.studyBlocks) ? s.school.studyBlocks : [],
       clinicals: Array.isArray(s.school?.clinicals) ? s.school.clinicals : [],
     },
+    events: Array.isArray(s.events) ? s.events : [],
     weekly: s.weekly && typeof s.weekly === "object" ? s.weekly : {},
     updatedAt: s.updatedAt,
   };
