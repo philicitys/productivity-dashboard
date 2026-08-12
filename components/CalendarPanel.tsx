@@ -9,6 +9,8 @@ type Ev = { title: string; color: string };
 
 const TYPE_COLOR = {
   event: "#8f86a6",
+  work: "#7c8aa5",
+  gym: "#c17f59",
   task: "rgb(var(--brand))",
   assignment: "rgb(var(--sage))",
   clinical: "rgb(var(--accent))",
@@ -17,7 +19,7 @@ const TYPE_COLOR = {
 
 const DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-type Kind = "event" | "task" | "assignment" | "clinical" | "study";
+type Kind = "event" | "work" | "gym" | "task" | "assignment" | "clinical" | "study";
 
 function Legend({ color, label }: { color: string; label: string }) {
   return (
@@ -55,7 +57,9 @@ export default function Calendar() {
     if (!date) return;
     (events[date] ||= []).push(ev);
   };
-  state.events.forEach((e) => add(e.date, { title: e.title, color: TYPE_COLOR.event }));
+  state.events.forEach((e) =>
+    add(e.date, { title: e.title, color: TYPE_COLOR[e.category ?? "event"] ?? TYPE_COLOR.event })
+  );
   state.tasks
     .filter((t) => !t.done)
     .forEach((t) => add(t.due, { title: t.title, color: TYPE_COLOR.task }));
@@ -74,8 +78,14 @@ export default function Calendar() {
     const t = title.trim();
     const now = new Date().toISOString();
     update((d) => {
-      if (kind === "event") {
-        d.events.push({ id: uid("evt"), title: t, date: selectedDay, createdAt: now });
+      if (kind === "event" || kind === "work" || kind === "gym") {
+        d.events.push({
+          id: uid("evt"),
+          title: t,
+          date: selectedDay,
+          category: kind,
+          createdAt: now,
+        });
       } else if (kind === "task") {
         d.tasks.unshift({
           id: uid("task"),
@@ -262,6 +272,8 @@ export default function Calendar() {
             />
             <Select value={kind} onChange={(e) => setKind(e.target.value as Kind)}>
               <option value="event">Event</option>
+              <option value="work">Work</option>
+              <option value="gym">Gym</option>
               <option value="task">Task</option>
               <option value="assignment">Assignment</option>
               <option value="clinical">Clinical</option>
@@ -277,6 +289,8 @@ export default function Calendar() {
 
       <div className="mt-3 flex flex-wrap gap-3 px-1 text-[10px] text-muted">
         <Legend color={TYPE_COLOR.event} label="Event" />
+        <Legend color={TYPE_COLOR.work} label="Work" />
+        <Legend color={TYPE_COLOR.gym} label="Gym" />
         <Legend color={TYPE_COLOR.task} label="Task" />
         <Legend color={TYPE_COLOR.assignment} label="Assignment" />
         <Legend color={TYPE_COLOR.clinical} label="Clinical" />
