@@ -92,6 +92,7 @@ export interface CalendarEvent {
   id: string;
   title: string;
   date: string; // yyyy-mm-dd
+  category?: "event" | "work" | "gym";
   createdAt: string;
 }
 
