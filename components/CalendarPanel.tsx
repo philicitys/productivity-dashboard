@@ -14,7 +14,7 @@ const TYPE_COLOR = {
   study: "rgb(var(--muted))",
 };
 
-const DOW = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function Legend({ color, label }: { color: string; label: string }) {
   return (
@@ -55,9 +55,9 @@ export default function Calendar() {
   const year = cursor.getFullYear();
   const month = cursor.getMonth();
 
-  // Monday-based grid.
+  // Sunday-based grid.
   const first = new Date(year, month, 1);
-  const startOffset = (first.getDay() + 6) % 7;
+  const startOffset = first.getDay(); // 0 = Sunday
   const gridStart = new Date(year, month, 1 - startOffset);
 
   const cells: Date[] = [];
