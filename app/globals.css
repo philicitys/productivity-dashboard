@@ -16,6 +16,7 @@
   --brand: 63 58 52;       /* espresso charcoal */
   --accent: 205 168 167;   /* dusty rose */
   --sage: 150 158 133;     /* muted sage */
+  --edge: 20 18 16;        /* near-black box borders */
 }
 
 /* Keep the light, airy look on every device. */
@@ -29,6 +30,7 @@
     --brand: 63 58 52;
     --accent: 205 168 167;
     --sage: 150 158 133;
+    --edge: 20 18 16;
   }
 }
 
