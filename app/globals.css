@@ -1,57 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Y2K "cool girl" moody theme:
-   burgundy base, chartreuse + electric-blue accents,
-   with a subtle cheetah-print texture behind everything. */
+/* Cool minimalist "that girl" theme:
+   warm paper neutrals, soft charcoal text, an editorial serif for
+   headings, and the faintest dusty-rose + sage accents. */
 :root {
-  --surface: 26 12 18;   /* deep burgundy-black */
-  --card: 44 21 32;      /* wine plum */
-  --ink: 243 235 241;    /* soft white */
-  --muted: 196 152 174;  /* dusty mauve */
-  --line: 94 44 64;      /* burgundy border */
-  --brand: 178 28 76;    /* burgundy / wine */
-  --accent: 202 240 0;   /* chartreuse */
-  --sage: 74 102 246;    /* electric blue */
+  --surface: 244 240 233;  /* warm paper */
+  --card: 253 252 250;     /* near white */
+  --ink: 38 35 31;         /* soft charcoal */
+  --muted: 143 135 124;    /* warm gray */
+  --line: 228 223 214;     /* light warm border */
+  --brand: 63 58 52;       /* espresso charcoal */
+  --accent: 202 166 165;   /* dusty rose */
+  --sage: 150 158 133;     /* muted sage */
 }
 
+/* Keep the light, airy look on every device. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --surface: 20 9 14;
-    --card: 38 18 27;
-    --ink: 245 237 243;
-    --muted: 200 156 178;
-    --line: 86 40 58;
-    --brand: 192 32 84;
-    --accent: 208 244 22;
-    --sage: 90 116 250;
+    --surface: 244 240 233;
+    --card: 253 252 250;
+    --ink: 38 35 31;
+    --muted: 143 135 124;
+    --line: 228 223 214;
+    --brand: 63 58 52;
+    --accent: 202 166 165;
+    --sage: 150 158 133;
   }
 }
 
 html,
 body {
-  background-color: rgb(var(--surface));
-  background-image:
-    /* moody color glows */
-    radial-gradient(900px 520px at 100% -10%, rgb(var(--brand) / 0.30), transparent),
-    radial-gradient(820px 480px at -10% 110%, rgb(var(--sage) / 0.20), transparent),
-    /* cheetah-print rings (broken-spot look) */
-    radial-gradient(ellipse 13px 10px at 18% 22%, transparent 34%, rgb(0 0 0 / 0.5) 42%, transparent 58%),
-    radial-gradient(ellipse 9px 12px at 62% 16%, transparent 34%, rgb(0 0 0 / 0.45) 42%, transparent 58%),
-    radial-gradient(ellipse 11px 9px at 41% 49%, transparent 34%, rgb(0 0 0 / 0.45) 42%, transparent 58%),
-    radial-gradient(ellipse 10px 13px at 83% 61%, transparent 34%, rgb(0 0 0 / 0.42) 42%, transparent 58%),
-    radial-gradient(ellipse 12px 9px at 26% 79%, transparent 34%, rgb(0 0 0 / 0.45) 42%, transparent 58%),
-    radial-gradient(ellipse 8px 9px at 58% 88%, transparent 34%, rgb(var(--accent) / 0.14) 40%, transparent 56%);
-  background-size:
-    100% 100%,
-    100% 100%,
-    170px 170px,
-    170px 170px,
-    170px 170px,
-    170px 170px,
-    170px 170px,
-    170px 170px;
-  background-attachment: fixed;
+  background: rgb(var(--surface));
   color: rgb(var(--ink));
+}
+
+/* Editorial serif for headings, clean sans for everything else. */
+h1,
+h2,
+h3 {
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+  letter-spacing: -0.01em;
 }
